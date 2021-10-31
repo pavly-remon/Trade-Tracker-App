@@ -1,6 +1,6 @@
 # resolution_app
 
-A new Flutter project.
+A Desktop Flutter app for windows for resolution company that app aims to manage Bills, Imports, and Exports .
 
 ## Getting Started
 
