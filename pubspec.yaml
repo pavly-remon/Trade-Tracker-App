@@ -1,0 +1,61 @@
+name: resolution_app
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  intl: ^0.17.0
+  path_provider: ^2.0.5
+  provider: ^6.0.1
+  flutter_secure_storage: ^4.2.1
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/logo/
+
+  fonts:
+    - family: TabIcons
+      fonts:
+        - asset: assets/icons/TabIcons.ttf
+
+    - family: Farbod
+      fonts:
+        - asset: assets/fonts/Farbod-Regular.ttf
+
+    - family: Trench
+      fonts:
+        - asset: assets/fonts/trench.otf
+
+    - family: Eurostile
+      fonts:
+        - asset: assets/fonts/EurostileExtended.ttf
+        - asset: assets/fonts/EurostileExtendedBlack.ttf
+          weight: 700
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
