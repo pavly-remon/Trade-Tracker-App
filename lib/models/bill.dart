@@ -84,6 +84,7 @@ class Bills with ChangeNotifier {
   // ignore: prefer_final_fields
   bool _importData = false;
   final List<Bill> _bills = [];
+
   List<Bill> get billsList {
     return _bills;
   }

@@ -7,7 +7,7 @@ import 'bill.dart';
 
 class FileManager {
   static Future<String> get _localPath async {
-    final directory = await getApplicationSupportDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
 

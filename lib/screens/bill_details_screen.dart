@@ -27,11 +27,11 @@ class BillDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Provider.of<Bills>(context, listen: false)
                           .deleteBill(bill.billNo);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                          ModalRoute.withName("/home"));
                     },
                     child: const Text(
                       "نعم",
@@ -77,21 +77,21 @@ class BillDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Text(
                     "رقـــــم الفـــاتورة:   ${bill.billNo}",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Text(
                     "اسم العميل/الشركة:     ${bill.companyName}",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(7.0),
                   child: Text(
                     "التــــــــــــاريخ:   ${bill.date}",
                     style: const TextStyle(fontSize: 20),
@@ -110,7 +110,7 @@ class BillDetailsScreen extends StatelessWidget {
                       columns: const [
                         DataColumn(
                           label: Text(
-                            'اســـم الوحدة',
+                            'البيان',
                           ),
                         ),
                         DataColumn(
@@ -121,6 +121,8 @@ class BillDetailsScreen extends StatelessWidget {
                             'سعر الوحدة',
                           ),
                         ),
+                        DataColumn(label: Text('اجمالي السعر')),
+                        DataColumn(label: Text('الضريبة')),
                       ],
                       rows: [
                         ..._buildDataRow(),
@@ -148,6 +150,16 @@ class BillDetailsScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 20.0))),
             DataCell(Text(bill.billData[i].unitPrice.roundToDouble().toString(),
                 style: const TextStyle(fontSize: 20.0))),
+            DataCell(Text(
+                (bill.billData[i].unitPrice * bill.billData[i].quantity)
+                    .roundToDouble()
+                    .toString(),
+                style: const TextStyle(fontSize: 20.0))),
+            DataCell(Text(
+                (bill.billData[i].unitPrice * bill.billData[i].quantity * 0.14)
+                    .roundToDouble()
+                    .toString(),
+                style: const TextStyle(fontSize: 20.0))),
           ],
         ),
       );
@@ -160,6 +172,12 @@ class BillDetailsScreen extends StatelessWidget {
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.purple)),
+        ),
+        const DataCell(
+          Text('', style: TextStyle(fontSize: 20.0)),
+        ),
+        const DataCell(
+          Text('', style: TextStyle(fontSize: 20.0)),
         ),
         const DataCell(
           Text('', style: TextStyle(fontSize: 20.0)),

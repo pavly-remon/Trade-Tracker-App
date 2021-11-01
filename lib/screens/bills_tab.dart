@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/bill.dart';
-import 'package:resolution_app/screens/insert_bill_screen.dart';
 import 'package:resolution_app/widgets/bill_widget.dart';
 
 class BillsTab extends StatefulWidget {
@@ -42,7 +41,7 @@ class _BillsTabState extends State<BillsTab> {
                 IconButton(
                   splashRadius: 25,
                   onPressed: () {
-                    Navigator.of(context).pushNamed(InsertBillScreen.routeName);
+                    Navigator.of(context).pushNamed('/insert_bill');
                   },
                   icon: const Center(
                     child: Icon(

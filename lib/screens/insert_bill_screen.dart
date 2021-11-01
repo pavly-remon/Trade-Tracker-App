@@ -2,13 +2,14 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
+import 'package:resolution_app/widgets/insert_bill_data.dart';
 
 class InsertBillScreen extends StatefulWidget {
-  static const String routeName = '/insert_bill';
   const InsertBillScreen({Key? key}) : super(key: key);
 
   @override
@@ -17,12 +18,17 @@ class InsertBillScreen extends StatefulWidget {
 
 class _InsertBillScreenState extends State<InsertBillScreen> {
   bool _isLoading = false;
-  final List<Widget> _billDataForm = <Widget>[];
   final _form = GlobalKey<FormState>();
+  final List<TextEditingController> _billDataItem = [TextEditingController()];
+  final List<TextEditingController> _billDataQuantity = [
+    TextEditingController()
+  ];
+  final List<TextEditingController> _billDataPrice = [TextEditingController()];
 
   late Bill _bill;
   final List<BillData> _billDataList = <BillData>[];
   BillData singleBillData = BillData(itemName: '', quantity: 0, unitPrice: 0.0);
+  final List<Widget> _billDataForm = [];
 
   @override
   void initState() {
@@ -46,6 +52,19 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
       _isLoading = true;
     });
     try {
+      for (int i = 0; i < _billDataItem.length; i++) {
+        _billDataList.add(BillData(
+          itemName: _billDataItem[i].text,
+          quantity: int.parse(_billDataQuantity[i].text),
+          unitPrice: double.parse(_billDataPrice[i].text),
+        ));
+      }
+      _bill = Bill(
+        billNo: _bill.billNo,
+        companyName: _bill.companyName,
+        date: _bill.date,
+        billData: _billDataList,
+      );
       Provider.of<Bills>(context, listen: false).insertBill(_bill);
       Navigator.of(context).pop();
     } catch (error) {
@@ -165,7 +184,11 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
                         SizedBox(
                           height: size.height * 0.05,
                         ),
-                        _buildInputBillData(size),
+                        InsertBillDataField(
+                          itemController: _billDataItem[0],
+                          priceController: _billDataPrice[0],
+                          quantityController: _billDataQuantity[0],
+                        ),
                         SizedBox(
                           height: size.height * 0.55,
                           child: ListView.builder(
@@ -181,10 +204,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
                                   padding: const EdgeInsets.all(5.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      setState(() {
-                                        _billDataForm
-                                            .add(_buildInputBillData(size));
-                                      });
+                                      _addBillData(size);
                                     },
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
@@ -237,71 +257,17 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
     );
   }
 
-  Widget _buildInputBillData(var size) {
-    return SizedBox(
-      height: size.height * 0.1,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildInputForm(
-                  labelText: 'الكمية',
-                  saveValue: 'billDataQuantity',
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'من فضلك ادخل الكمية';
-                    }
-                    if (int.tryParse(value) == null) {
-                      return 'من فضلك ادخل أرقام صحيحة فقط مثال 5';
-                    }
-                    if (int.parse(value) <= 0) {
-                      return 'الكمية غير صحيحة';
-                    }
-                    return null;
-                  }),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: _buildInputForm(
-                  labelText: 'اسم الوحدة',
-                  saveValue: 'billDataItem',
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'من فضلك ادخل اسم الوحدة';
-                    }
-                    return null;
-                  }),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: _buildInputForm(
-                  labelText: 'سعر الوحدة',
-                  saveValue: 'billDataPrice',
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'من فضلك ادخل سعر الوحدة';
-                    }
-                    if (double.tryParse(value) == null) {
-                      return 'من فضلك ادخل أرقام فقط مثال 5.50';
-                    }
-                    if (double.parse(value) <= 0) {
-                      return 'السعر غير صحيح';
-                    }
-                    return null;
-                  }),
-            ),
-          ),
-        ],
-      ),
-    );
+  void _addBillData(Size size) {
+    setState(() {
+      _billDataItem.add(TextEditingController());
+      _billDataPrice.add(TextEditingController());
+      _billDataQuantity.add(TextEditingController());
+      _billDataForm.add(InsertBillDataField(
+        itemController: _billDataItem[_billDataItem.length - 1],
+        priceController: _billDataPrice[_billDataPrice.length - 1],
+        quantityController: _billDataQuantity[_billDataQuantity.length - 1],
+      ));
+    });
   }
 
   TextFormField _buildInputForm({
@@ -310,8 +276,10 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
     String? hintText,
     String? saveValue,
     String? Function(String?)? validator,
+    TextEditingController? controller,
   }) {
     return TextFormField(
+      controller: controller,
       textAlign: TextAlign.right,
       keyboardType: inputType,
       decoration: InputDecoration(
@@ -346,28 +314,6 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
               date: value!,
               billData: _billDataList,
             );
-            break;
-          case 'billDataItem':
-            singleBillData = BillData(
-              itemName: value!,
-              quantity: singleBillData.quantity,
-              unitPrice: singleBillData.unitPrice,
-            );
-            break;
-          case 'billDataQuantity':
-            singleBillData = BillData(
-              itemName: singleBillData.itemName,
-              quantity: int.parse(value!),
-              unitPrice: singleBillData.unitPrice,
-            );
-            break;
-          case 'billDataPrice':
-            singleBillData = BillData(
-              itemName: singleBillData.itemName,
-              quantity: singleBillData.quantity,
-              unitPrice: double.parse(value!),
-            );
-            _billDataList.add(singleBillData);
             break;
 
           default:

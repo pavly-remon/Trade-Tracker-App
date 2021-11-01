@@ -56,7 +56,9 @@ class _AuthScreenState extends State<AuthScreen> {
               child: TextField(
                 obscureText: true,
                 controller: _pw,
-                onSubmitted: (text) {},
+                onSubmitted: (text) {
+                  _submitPW();
+                },
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   hintText: 'Password',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/screens/auth_screen.dart';
+import 'package:resolution_app/screens/home_screen.dart';
 import 'package:resolution_app/screens/insert_bill_screen.dart';
 
 void main() {
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          InsertBillScreen.routeName: (ctx) => const InsertBillScreen(),
+          '/home': (ctx) => const HomeScreen(),
+          '/insert_bill': (ctx) => const InsertBillScreen(),
         },
         home: const AuthScreen(),
       ),
