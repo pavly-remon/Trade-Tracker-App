@@ -26,8 +26,8 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
   final List<TextEditingController> _billDataPrice = [TextEditingController()];
 
   late Bill _bill;
-  final List<BillData> _billDataList = <BillData>[];
-  BillData singleBillData = BillData(itemName: '', quantity: 0, unitPrice: 0.0);
+  final List<Data> _billDataList = <Data>[];
+  Data singleBillData = Data(itemName: '', quantity: 0, unitPrice: 0.0);
   final List<Widget> _billDataForm = [];
 
   @override
@@ -53,7 +53,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
     });
     try {
       for (int i = 0; i < _billDataItem.length; i++) {
-        _billDataList.add(BillData(
+        _billDataList.add(Data(
           itemName: _billDataItem[i].text,
           quantity: int.parse(_billDataQuantity[i].text),
           unitPrice: double.parse(_billDataPrice[i].text),

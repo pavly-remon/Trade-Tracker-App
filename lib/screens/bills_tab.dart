@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/widgets/bill_widget.dart';
+import 'package:resolution_app/widgets/search_bar.dart';
 
 class BillsTab extends StatefulWidget {
   final Size appBarSize;
@@ -37,47 +38,10 @@ class _BillsTabState extends State<BillsTab> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildSearchBar(size),
-                IconButton(
-                  splashRadius: 25,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/insert_bill');
-                  },
-                  icon: const Center(
-                    child: Icon(
-                      Icons.add,
-                    ),
-                  ),
-                ),
+                SearchBar(search: _search),
               ],
             ),
             _buildBillsListView(context, size),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchBar(Size size) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: SizedBox(
-        height: size.height * 0.1,
-        child: Stack(
-          alignment: AlignmentDirectional.centerStart,
-          children: [
-            SizedBox(
-              child: TextField(
-                controller: _search,
-                textDirection: TextDirection.rtl,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'البحث باسم الشركة',
-                    hintTextDirection: TextDirection.rtl),
-              ),
-              width: size.width * 0.6,
-            ),
-            const Icon(Icons.search),
           ],
         ),
       ),

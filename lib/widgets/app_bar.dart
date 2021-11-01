@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:resolution_app/icons.dart';
 
-AppBar mainAppBar({required String title, required bool tabsMode}) => AppBar(
+AppBar mainAppBar({
+  required String title,
+  required bool tabsMode,
+  TabController? tabController,
+  void Function(int)? onTap,
+}) =>
+    AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
       title: Text(
@@ -32,6 +38,8 @@ AppBar mainAppBar({required String title, required bool tabsMode}) => AppBar(
       ),
       bottom: tabsMode
           ? TabBar(
+              onTap: onTap,
+              controller: tabController,
               unselectedLabelColor: Colors.white,
               labelColor: Colors.black,
               indicator: BoxDecoration(
@@ -45,10 +53,17 @@ AppBar mainAppBar({required String title, required bool tabsMode}) => AppBar(
                   text: 'فواتير',
                 ),
                 Tab(
-                  icon: Icon(
-                    Icons.playlist_add_check_outlined,
+                  icon: RotatedBox(
+                    quarterTurns: 1,
+                    child: Icon(
+                      TabIcons.exchange,
+                    ),
                   ),
                   text: 'حسابات',
+                ),
+                Tab(
+                  icon: Icon(Icons.business_center),
+                  text: 'الشركات',
                 ),
               ],
             )

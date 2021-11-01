@@ -12,4 +12,6 @@ class TabIcons {
   // ignore: constant_identifier_names
   static const IconData file_invoice_dollar =
       IconData(0xf571, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData exchange =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

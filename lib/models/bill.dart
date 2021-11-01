@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:resolution_app/models/file_manager.dart';
 
-class BillData {
+class Data {
   String itemName;
   int quantity;
   double unitPrice;
 
-  BillData({
+  Data({
     required this.itemName,
     required this.quantity,
     required this.unitPrice,
@@ -20,8 +20,8 @@ class BillData {
     };
   }
 
-  static BillData fromMapObject(Map<String, Object?> billDataMap) {
-    return BillData(
+  static Data fromMapObject(Map<String, Object?> billDataMap) {
+    return Data(
       itemName: billDataMap['Item'] as String,
       quantity: billDataMap['Quantity'] as int,
       unitPrice: billDataMap['Price'] as double,
@@ -33,7 +33,7 @@ class Bill {
   String billNo;
   String companyName;
   String date;
-  List<BillData> billData;
+  List<Data> billData;
 
   Bill({
     required this.billNo,
@@ -43,11 +43,11 @@ class Bill {
   });
 
   static Bill fromMapObject(Map<String, Object?> billMap) {
-    List<BillData> billData = <BillData>[];
+    List<Data> billData = <Data>[];
     dynamic billDataMapList = billMap['billData'];
     if (billMap['billData'] != null) {
       for (int i = 0; i < billDataMapList.length; i++) {
-        billData.add(BillData.fromMapObject(billDataMapList[i]));
+        billData.add(Data.fromMapObject(billDataMapList[i]));
       }
     }
     return Bill(

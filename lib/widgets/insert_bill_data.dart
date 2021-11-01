@@ -18,7 +18,7 @@ class InsertBillDataField extends StatefulWidget {
 
 class _InsertBillDataFieldState extends State<InsertBillDataField> {
   double _total = 0.0;
-  BillData singleBillData = BillData(itemName: '', quantity: 0, unitPrice: 0.0);
+  Data singleBillData = Data(itemName: '', quantity: 0, unitPrice: 0.0);
 
   final _form = GlobalKey<FormState>();
 
@@ -171,21 +171,21 @@ class _InsertBillDataFieldState extends State<InsertBillDataField> {
       onSaved: (value) {
         switch (saveValue) {
           case 'billDataItem':
-            singleBillData = BillData(
+            singleBillData = Data(
               itemName: value!,
               quantity: singleBillData.quantity,
               unitPrice: singleBillData.unitPrice,
             );
             break;
           case 'billDataQuantity':
-            singleBillData = BillData(
+            singleBillData = Data(
               itemName: singleBillData.itemName,
               quantity: int.parse(value!),
               unitPrice: singleBillData.unitPrice,
             );
             break;
           case 'billDataPrice':
-            singleBillData = BillData(
+            singleBillData = Data(
               itemName: singleBillData.itemName,
               quantity: singleBillData.quantity,
               unitPrice: double.parse(value!),
