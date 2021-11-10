@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
-import 'package:resolution_app/widgets/insert_bill_data.dart';
+import 'package:resolution_app/widgets/insert_data.dart';
 
 class InsertBillScreen extends StatefulWidget {
   const InsertBillScreen({Key? key}) : super(key: key);
@@ -24,11 +24,10 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
     TextEditingController()
   ];
   final List<TextEditingController> _billDataPrice = [TextEditingController()];
+  final List<Widget> _billDataForm = [];
 
   late Bill _bill;
   final List<Data> _billDataList = <Data>[];
-  Data singleBillData = Data(itemName: '', quantity: 0, unitPrice: 0.0);
-  final List<Widget> _billDataForm = [];
 
   @override
   void initState() {
@@ -74,11 +73,11 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('An error occurred!'),
-          content: const Text('Something went wrong.'),
+          title: const Text('خطأ'),
+          content: const Text('هناك خطأ في إدخال البيانات'),
           actions: <Widget>[
             ElevatedButton(
-              child: const Text('Okay'),
+              child: const Text('موافق'),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
@@ -184,7 +183,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
                         SizedBox(
                           height: size.height * 0.05,
                         ),
-                        InsertBillDataField(
+                        InsertDataField(
                           itemController: _billDataItem[0],
                           priceController: _billDataPrice[0],
                           quantityController: _billDataQuantity[0],
@@ -228,6 +227,9 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
                                         : () {
                                             setState(() {
                                               _billDataForm.removeLast();
+                                              _billDataItem.removeLast();
+                                              _billDataPrice.removeLast();
+                                              _billDataQuantity.removeLast();
                                             });
                                           },
                                     child: const Padding(
@@ -262,7 +264,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
       _billDataItem.add(TextEditingController());
       _billDataPrice.add(TextEditingController());
       _billDataQuantity.add(TextEditingController());
-      _billDataForm.add(InsertBillDataField(
+      _billDataForm.add(InsertDataField(
         itemController: _billDataItem[_billDataItem.length - 1],
         priceController: _billDataPrice[_billDataPrice.length - 1],
         quantityController: _billDataQuantity[_billDataQuantity.length - 1],
@@ -321,5 +323,13 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
         }
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _billDataItem.clear();
+    _billDataPrice.clear();
+    _billDataQuantity.clear();
+    super.dispose();
   }
 }

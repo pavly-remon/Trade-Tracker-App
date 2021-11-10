@@ -85,11 +85,17 @@ class Bills with ChangeNotifier {
   bool _importData = false;
   final List<Bill> _bills = [];
 
-  List<Bill> get billsList {
-    return _bills;
+  List<Bill> billsList(String? search) {
+    if (search == null || search == '') {
+      return _bills;
+    }
+    return _bills
+        .where((element) =>
+            element.companyName.toLowerCase().contains(search.toLowerCase()))
+        .toList();
   }
 
-  Future<void> importData() async {
+  Future<void> importBillsData() async {
     try {
       if (!_importData) {
         await FileManager.readBills().then((value) {
@@ -126,15 +132,5 @@ class Bills with ChangeNotifier {
     } catch (e) {
       rethrow;
     }
-  }
-
-  List<Bill> searchBill(String? search) {
-    if (search == null || search == '') {
-      return _bills;
-    }
-    return _bills
-        .where((element) =>
-            element.companyName.toLowerCase().contains(search.toLowerCase()))
-        .toList();
   }
 }

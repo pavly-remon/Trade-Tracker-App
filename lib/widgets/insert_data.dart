@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:resolution_app/models/bill.dart';
 
-class InsertBillDataField extends StatefulWidget {
+class InsertDataField extends StatefulWidget {
   final TextEditingController? itemController;
   final TextEditingController? quantityController;
   final TextEditingController? priceController;
-  const InsertBillDataField({
+  final bool disableCalMode;
+  const InsertDataField({
     Key? key,
     required this.itemController,
     required this.priceController,
     required this.quantityController,
+    this.disableCalMode = false,
   }) : super(key: key);
 
   @override
-  _InsertBillDataFieldState createState() => _InsertBillDataFieldState();
+  _InsertDataFieldState createState() => _InsertDataFieldState();
 }
 
-class _InsertBillDataFieldState extends State<InsertBillDataField> {
+class _InsertDataFieldState extends State<InsertDataField> {
   double _total = 0.0;
   Data singleBillData = Data(itemName: '', quantity: 0, unitPrice: 0.0);
 
@@ -92,56 +94,59 @@ class _InsertBillDataFieldState extends State<InsertBillDataField> {
                       }),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  final isValid = _form.currentState!.validate();
-                  if (!isValid) {
-                    return;
-                  }
-                  setState(() {
-                    _total = double.parse(widget.priceController!.text) *
-                        int.parse(widget.quantityController!.text);
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  primary: Colors.purple,
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
+              if (!widget.disableCalMode)
+                ElevatedButton(
+                  onPressed: () {
+                    final isValid = _form.currentState!.validate();
+                    if (!isValid) {
+                      return;
+                    }
+                    setState(() {
+                      _total = double.parse(widget.priceController!.text) *
+                          int.parse(widget.quantityController!.text);
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    primary: Colors.purple,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Center(
-                        child: Text("الاجمالي: ${_total.roundToDouble()}")),
+              if (!widget.disableCalMode)
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: Center(
+                          child: Text("الاجمالي: ${_total.roundToDouble()}")),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Center(
-                        child: Text(
-                            "الضريبة: ${(_total * 0.14).roundToDouble()}")),
+              if (!widget.disableCalMode)
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: Center(
+                          child: Text(
+                              "الضريبة: ${(_total * 0.14).roundToDouble()}")),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

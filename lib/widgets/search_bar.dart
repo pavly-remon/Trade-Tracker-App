@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatelessWidget {
+  final String? hintText;
   const SearchBar({
     Key? key,
+    this.hintText,
     required TextEditingController search,
   })  : _search = search,
         super(key: key);
@@ -23,10 +25,10 @@ class SearchBar extends StatelessWidget {
               child: TextField(
                 controller: _search,
                 textDirection: TextDirection.rtl,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.only(right: 50),
-                    hintText: 'البحث باسم الشركة',
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.only(right: 50),
+                    hintText: hintText,
                     hintTextDirection: TextDirection.rtl),
               ),
               width: size.width * 0.6,

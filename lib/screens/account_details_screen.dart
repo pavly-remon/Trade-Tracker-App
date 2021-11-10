@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:resolution_app/models/bill.dart';
+import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/screens/home_screen.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
 
-class BillDetailsScreen extends StatelessWidget {
-  final Bill bill;
-  const BillDetailsScreen({Key? key, required this.bill}) : super(key: key);
+class AccountDetailsScreen extends StatelessWidget {
+  final Account account;
+  const AccountDetailsScreen({Key? key, required this.account})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: mainAppBar(title: "تفاصيل الفاتورة", tabsMode: false),
+      appBar: mainAppBar(title: "تفاصيل المعاملة", tabsMode: false),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -21,12 +22,12 @@ class BillDetailsScreen extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: AlertDialog(
                 title: const Text('حذف'),
-                content: const Text('هل أنت متأكد من حذف الفاتورة؟'),
+                content: const Text('هل أنت متأكد من حذف المعاملة؟'),
                 actions: [
                   ElevatedButton(
                     onPressed: () {
-                      Provider.of<Bills>(context, listen: false)
-                          .deleteBill(bill.billNo);
+                      Provider.of<Accounts>(context, listen: false)
+                          .deleteAccount(account.id!);
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -79,21 +80,16 @@ class BillDetailsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(7.0),
                   child: Text(
-                    "رقـــــم الفـــاتورة:   ${bill.billNo}",
+                    account.transaction == Transaction.import
+                        ? "نوع المعاملة: وارد"
+                        : "نوع المعاملة: منصرف",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(7.0),
                   child: Text(
-                    "اسم العميل/الشركة:     ${bill.companyName}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Text(
-                    "التــــــــــــاريخ:   ${bill.date}",
+                    "التــــــــــــاريخ:   ${account.date}",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),
@@ -122,7 +118,6 @@ class BillDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         DataColumn(label: Text('اجمالي السعر')),
-                        DataColumn(label: Text('الضريبة')),
                       ],
                       rows: [
                         ..._buildDataRow(),
@@ -140,23 +135,18 @@ class BillDetailsScreen extends StatelessWidget {
 
   List<DataRow> _buildDataRow() {
     List<DataRow> table = [];
-    for (int i = 0; i < bill.billData.length; i++) {
+    for (int i = 0; i < account.data.length; i++) {
       table.add(
         DataRow(
           cells: [
-            DataCell(Text(bill.billData[i].itemName,
+            DataCell(Text(account.data[i].itemName,
                 style: const TextStyle(fontSize: 20.0))),
-            DataCell(Text(bill.billData[i].quantity.toString(),
+            DataCell(Text(account.data[i].quantity.toString(),
                 style: const TextStyle(fontSize: 20.0))),
-            DataCell(Text(bill.billData[i].unitPrice.roundToDouble().toString(),
-                style: const TextStyle(fontSize: 20.0))),
-            DataCell(Text(
-                (bill.billData[i].unitPrice * bill.billData[i].quantity)
-                    .roundToDouble()
-                    .toString(),
+            DataCell(Text(account.data[i].unitPrice.roundToDouble().toString(),
                 style: const TextStyle(fontSize: 20.0))),
             DataCell(Text(
-                (bill.billData[i].unitPrice * bill.billData[i].quantity * 0.14)
+                (account.data[i].unitPrice * account.data[i].quantity)
                     .roundToDouble()
                     .toString(),
                 style: const TextStyle(fontSize: 20.0))),
@@ -167,7 +157,7 @@ class BillDetailsScreen extends StatelessWidget {
     table.add(
       DataRow(cells: [
         const DataCell(
-          Text('الاجمالي (شامل الضريبة)',
+          Text('الاجمالي',
               style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
@@ -179,11 +169,8 @@ class BillDetailsScreen extends StatelessWidget {
         const DataCell(
           Text('', style: TextStyle(fontSize: 20.0)),
         ),
-        const DataCell(
-          Text('', style: TextStyle(fontSize: 20.0)),
-        ),
         DataCell(
-          Text(bill.getTotalPriceWithTax().roundToDouble().toString(),
+          Text(account.getTotalPrice().roundToDouble().toString(),
               style: const TextStyle(fontSize: 20.0)),
         ),
       ]),

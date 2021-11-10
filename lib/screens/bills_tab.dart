@@ -26,7 +26,7 @@ class _BillsTabState extends State<BillsTab> {
 
   @override
   Widget build(BuildContext context) {
-    billsList = Provider.of<Bills>(context).searchBill(_search.text);
+    billsList = Provider.of<Bills>(context).billsList(_search.text);
     final size = MediaQuery.of(context).size;
     return Center(
       child: SizedBox(
@@ -38,7 +38,10 @@ class _BillsTabState extends State<BillsTab> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SearchBar(search: _search),
+                SearchBar(
+                  search: _search,
+                  hintText: "البحث باسم العميل/الشركة",
+                ),
               ],
             ),
             _buildBillsListView(context, size),

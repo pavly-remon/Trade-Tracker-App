@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/models/auth.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/screens/home_screen.dart';
@@ -53,10 +54,11 @@ class _AuthScreenState extends State<AuthScreen> {
           alignment: Alignment.centerRight,
           children: [
             Center(
-              child: TextField(
+              child: TextFormField(
                 obscureText: true,
+                autofocus: true,
                 controller: _pw,
-                onSubmitted: (text) {
+                onFieldSubmitted: (text) {
                   _submitPW();
                 },
                 textInputAction: TextInputAction.next,
@@ -92,7 +94,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitPW() {
     if (Authentication.checkPW(_pw.text)) {
-      Provider.of<Bills>(context, listen: false).importData();
+      Provider.of<Bills>(context, listen: false).importBillsData();
+      Provider.of<Accounts>(context, listen: false).importAccountsData();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),

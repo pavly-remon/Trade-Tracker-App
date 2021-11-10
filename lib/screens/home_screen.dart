@@ -73,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Navigator.of(context).pushNamed('/insert_bill');
                       break;
                     case 1:
+                      Navigator.of(context).pushNamed('/insert_account');
                       break;
                     default:
                   }
