@@ -30,13 +30,20 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: size.height * 0.4,
+                height: size.height * 0.6,
                 child: Image.asset('assets/images/logo/logo_white.png'),
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: _buildPasswordBar(size),
-              )
+              ),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              Image.asset(
+                'assets/images/proton.png',
+                scale: 15,
+              ),
             ],
           ),
         ),
