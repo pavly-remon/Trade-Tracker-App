@@ -1,39 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:resolution_app/models/file_manager.dart';
+import 'package:resolution_app/utils/file_manager.dart';
 
-class Data {
-  String itemName;
-  int quantity;
-  double unitPrice;
-
-  Data({
-    required this.itemName,
-    required this.quantity,
-    required this.unitPrice,
-  });
-
-  Map<String, Object?> toJSON() {
-    return {
-      "Item": itemName,
-      "Quantity": quantity,
-      "Price": unitPrice,
-    };
-  }
-
-  static Data fromMapObject(Map<String, Object?> billDataMap) {
-    return Data(
-      itemName: billDataMap['Item'] as String,
-      quantity: billDataMap['Quantity'] as int,
-      unitPrice: billDataMap['Price'] as double,
-    );
-  }
-}
+import 'statement.dart';
 
 class Bill {
   String billNo;
   String companyName;
   String date;
-  List<Data> billData;
+  List<Statment> billData;
 
   Bill({
     required this.billNo,
@@ -43,11 +16,11 @@ class Bill {
   });
 
   static Bill fromMapObject(Map<String, Object?> billMap) {
-    List<Data> billData = <Data>[];
+    List<Statment> billData = <Statment>[];
     dynamic billDataMapList = billMap['billData'];
     if (billMap['billData'] != null) {
       for (int i = 0; i < billDataMapList.length; i++) {
-        billData.add(Data.fromMapObject(billDataMapList[i]));
+        billData.add(Statment.fromMapObject(billDataMapList[i]));
       }
     }
     return Bill(
@@ -80,55 +53,55 @@ class Bill {
   }
 }
 
-class Bills with ChangeNotifier {
-  // ignore: prefer_final_fields
+class BillRepository {
   bool _importData = false;
-  final List<Bill> _bills = [];
+  static final List<Bill> bills = [];
+
+  BillRepository() {
+    _importBills();
+  }
 
   List<Bill> billsList(String? search) {
     if (search == null || search == '') {
-      return _bills;
+      return bills;
     }
-    return _bills
+    return bills
         .where((element) =>
             element.companyName.toLowerCase().contains(search.toLowerCase()))
         .toList();
   }
 
-  Future<void> importBillsData() async {
+  Future<void> _importBills() async {
     try {
       if (!_importData) {
         await FileManager.readBills().then((value) {
           if (value != null) {
             for (int i = 0; i < value['Bills'].length; i++) {
-              _bills.add(Bill.fromMapObject(value['Bills'][i]));
+              bills.add(Bill.fromMapObject(value['Bills'][i]));
             }
           }
         });
         _importData = true;
-        notifyListeners();
       }
     } catch (e) {
       rethrow;
     }
   }
 
-  void insertBill(Bill bill) {
+  static void insertBill(Bill bill) {
     try {
-      _bills.add(bill);
-      _bills.sort((a, b) => int.parse(a.billNo).compareTo(int.parse(b.billNo)));
-      FileManager.writeBills(_bills);
-      notifyListeners();
+      bills.add(bill);
+      bills.sort((a, b) => int.parse(a.billNo).compareTo(int.parse(b.billNo)));
+      FileManager.writeBills(bills);
     } catch (e) {
       rethrow;
     }
   }
 
-  void deleteBill(String billNo) {
+  static void deleteBill(String billNo) {
     try {
-      _bills.removeWhere((element) => element.billNo == billNo);
-      FileManager.writeBills(_bills);
-      notifyListeners();
+      bills.removeWhere((element) => element.billNo == billNo);
+      FileManager.writeBills(bills);
     } catch (e) {
       rethrow;
     }

@@ -70,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen>
                 onPressed: () {
                   switch (_tabIndex) {
                     case 0:
-                      Navigator.of(context).pushNamed('/insert_bill');
+                      Navigator.of(context).pushNamed('insert_bill');
                       break;
                     case 1:
-                      Navigator.of(context).pushNamed('/insert_account');
+                      Navigator.of(context).pushNamed('insert_account');
                       break;
                     default:
                   }

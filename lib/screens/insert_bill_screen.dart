@@ -3,9 +3,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:resolution_app/cubit/bill_cubit.dart';
 import 'package:resolution_app/models/bill.dart';
+import 'package:resolution_app/models/statement.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
 import 'package:resolution_app/widgets/insert_data.dart';
 
@@ -27,7 +29,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
   final List<Widget> _billDataForm = [];
 
   late Bill _bill;
-  final List<Data> _billDataList = <Data>[];
+  final List<Statment> _billDataList = <Statment>[];
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
     });
     try {
       for (int i = 0; i < _billDataItem.length; i++) {
-        _billDataList.add(Data(
+        _billDataList.add(Statment(
           itemName: _billDataItem[i].text,
           quantity: int.parse(_billDataQuantity[i].text),
           unitPrice: double.parse(_billDataPrice[i].text),
@@ -64,7 +66,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
         date: _bill.date,
         billData: _billDataList,
       );
-      Provider.of<Bills>(context, listen: false).insertBill(_bill);
+      BlocProvider.of<BillCubit>(context, listen: false).add(_bill);
       Navigator.of(context).pop();
     } catch (error) {
       setState(() {

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:resolution_app/models/account.dart';
 
-import 'bill.dart';
+import '../models/bill.dart';
 
 class FileManager {
   static Future<String> createFolderInAppDocDir(String folderName) async {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/account.dart';
-import 'package:resolution_app/models/bill.dart';
+import 'package:resolution_app/models/statement.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
 import 'package:resolution_app/widgets/insert_data.dart';
 
@@ -33,7 +33,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
 
   late Account _account =
       Account(transaction: Transaction.import, date: '', data: []);
-  final List<Data> _accountDataList = <Data>[];
+  final List<Statment> _accountDataList = <Statment>[];
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState!.validate();
@@ -47,7 +47,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
     });
     try {
       for (int i = 0; i < _accountDataItem.length; i++) {
-        _accountDataList.add(Data(
+        _accountDataList.add(Statment(
           itemName: _accountDataItem[i].text,
           quantity: int.parse(_accountDataQuantity[i].text),
           unitPrice: double.parse(_accountDataPrice[i].text),

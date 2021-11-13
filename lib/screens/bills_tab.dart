@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resolution_app/cubit/bill_cubit.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/widgets/bill_widget.dart';
 import 'package:resolution_app/widgets/search_bar.dart';
@@ -13,7 +14,6 @@ class BillsTab extends StatefulWidget {
 }
 
 class _BillsTabState extends State<BillsTab> {
-  List<Bill> billsList = [];
   final _search = TextEditingController();
 
   @override
@@ -26,7 +26,6 @@ class _BillsTabState extends State<BillsTab> {
 
   @override
   Widget build(BuildContext context) {
-    billsList = Provider.of<Bills>(context).billsList(_search.text);
     final size = MediaQuery.of(context).size;
     return Center(
       child: SizedBox(
@@ -52,14 +51,24 @@ class _BillsTabState extends State<BillsTab> {
   }
 
   Widget _buildBillsListView(BuildContext context, Size size) {
+    List<Bill> billsList = [];
     return SizedBox(
       height: size.height * 0.6,
-      child: ListView.builder(
-        itemExtent: size.height * 0.15,
-        itemCount: billsList.length,
-        itemBuilder: (context, i) => BillWidget(
-          bill: billsList[i],
-        ),
+      child: BlocBuilder<BillCubit, BillState>(
+        builder: (context, state) {
+          billsList = state.bills
+              .where((element) => element.companyName
+                  .toLowerCase()
+                  .contains(_search.text.toLowerCase()))
+              .toList();
+          return ListView.builder(
+            itemExtent: size.height * 0.15,
+            itemCount: billsList.length,
+            itemBuilder: (context, i) => BillWidget(
+              bill: billsList[i],
+            ),
+          );
+        },
       ),
     );
   }

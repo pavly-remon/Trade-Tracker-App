@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:resolution_app/models/bill.dart';
-import 'package:resolution_app/screens/bill_details_screen.dart';
 
 class BillWidget extends StatelessWidget {
   final Bill bill;
@@ -17,11 +16,7 @@ class BillWidget extends StatelessWidget {
           elevation: 6,
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BillDetailsScreen(bill: bill)),
-              );
+              Navigator.of(context).pushNamed('bill_details', arguments: bill);
             },
             splashColor: Colors.blue[400],
             hoverColor: Colors.blue[100],

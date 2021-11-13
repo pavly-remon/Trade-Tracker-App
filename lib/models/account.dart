@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:resolution_app/models/file_manager.dart';
+import 'package:resolution_app/utils/file_manager.dart';
 
-import 'bill.dart';
+import 'statement.dart';
 
 enum Transaction {
   import,
@@ -12,7 +12,7 @@ class Account {
   String? id;
   Transaction transaction;
   String date;
-  List<Data> data;
+  List<Statment> data;
   Account({
     this.id,
     required this.transaction,
@@ -42,11 +42,11 @@ class Account {
   }
 
   static Account fromMapObject(Map<String, Object?> accountMap) {
-    List<Data> data = <Data>[];
+    List<Statment> data = <Statment>[];
     dynamic accountDataMapList = accountMap['data'];
     if (accountMap['data'] != null) {
       for (int i = 0; i < accountDataMapList.length; i++) {
-        data.add(Data.fromMapObject(accountDataMapList[i]));
+        data.add(Statment.fromMapObject(accountDataMapList[i]));
       }
     }
     if (accountMap['transaction'] == Transaction.import.index) {
@@ -103,7 +103,7 @@ class Accounts with ChangeNotifier {
     }
   }
 
-  Future<void> importAccountsData() async {
+  Future<void> importAccounts() async {
     try {
       if (!_importData) {
         await FileManager.readAccounts().then((value) {

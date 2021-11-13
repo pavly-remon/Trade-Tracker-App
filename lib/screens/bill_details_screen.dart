@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resolution_app/cubit/bill_cubit.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/screens/home_screen.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
@@ -25,13 +26,11 @@ class BillDetailsScreen extends StatelessWidget {
                 actions: [
                   ElevatedButton(
                     onPressed: () {
-                      Provider.of<Bills>(context, listen: false)
-                          .deleteBill(bill.billNo);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                          ModalRoute.withName("/home"));
+                      BlocProvider.of<BillCubit>(context, listen: false)
+                          .remove(bill.billNo);
+                      Navigator.of(context).popUntil(
+                        ModalRoute.withName("home"),
+                      );
                     },
                     child: const Text(
                       "موافق",

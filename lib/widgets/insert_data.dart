@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resolution_app/models/bill.dart';
+import 'package:resolution_app/models/statement.dart';
 
 class InsertDataField extends StatefulWidget {
   final TextEditingController? itemController;
@@ -20,7 +20,7 @@ class InsertDataField extends StatefulWidget {
 
 class _InsertDataFieldState extends State<InsertDataField> {
   double _total = 0.0;
-  Data singleBillData = Data(itemName: '', quantity: 0, unitPrice: 0.0);
+  Statment singleBillData = Statment(itemName: '', quantity: 0, unitPrice: 0.0);
 
   final _form = GlobalKey<FormState>();
 
@@ -176,21 +176,21 @@ class _InsertDataFieldState extends State<InsertDataField> {
       onSaved: (value) {
         switch (saveValue) {
           case 'billDataItem':
-            singleBillData = Data(
+            singleBillData = Statment(
               itemName: value!,
               quantity: singleBillData.quantity,
               unitPrice: singleBillData.unitPrice,
             );
             break;
           case 'billDataQuantity':
-            singleBillData = Data(
+            singleBillData = Statment(
               itemName: singleBillData.itemName,
               quantity: int.parse(value!),
               unitPrice: singleBillData.unitPrice,
             );
             break;
           case 'billDataPrice':
-            singleBillData = Data(
+            singleBillData = Statment(
               itemName: singleBillData.itemName,
               quantity: singleBillData.quantity,
               unitPrice: double.parse(value!),

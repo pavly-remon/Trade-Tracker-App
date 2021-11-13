@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/models/auth.dart';
 import 'package:resolution_app/models/bill.dart';
-import 'package:resolution_app/screens/home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -94,12 +93,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitPW() {
     if (Authentication.checkPW(_pw.text)) {
-      Provider.of<Bills>(context, listen: false).importBillsData();
-      Provider.of<Accounts>(context, listen: false).importAccountsData();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      BillRepository();
+      Provider.of<Accounts>(context, listen: false).importAccounts();
+      Navigator.of(context).pushReplacementNamed('home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Invalid Password"),
