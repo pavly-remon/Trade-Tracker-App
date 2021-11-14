@@ -30,6 +30,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
 
   late Bill _bill;
   final List<Statment> _billDataList = <Statment>[];
+  var selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -40,6 +41,19 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
       billData: _billDataList,
     );
     super.initState();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
   }
 
   Future<void> _saveForm() async {
@@ -63,7 +77,7 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
       _bill = Bill(
         billNo: _bill.billNo,
         companyName: _bill.companyName,
-        date: _bill.date,
+        date: DateFormat('dd-MM-yyyy').format(selectedDate),
         billData: _billDataList,
       );
       BlocProvider.of<BillCubit>(context, listen: false).add(_bill);
@@ -159,23 +173,42 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
                                   flex: 1,
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 10.0),
-                                    child: _buildInputForm(
-                                        labelText: 'التاريخ',
-                                        inputType: TextInputType.datetime,
-                                        hintText: DateFormat('dd-MM-yyyy')
-                                            .format(DateTime.now()),
-                                        saveValue: 'date',
-                                        validator: (value) {
-                                          RegExp regExp = RegExp(
-                                              r"\d{1,2}\-\d{1,2}\-\d{4}");
-                                          if (value!.isEmpty) {
-                                            return 'من فضلك ادخل التاريخ';
-                                          }
-                                          if (!regExp.hasMatch(value)) {
-                                            return 'سنة - شهر - يوم';
-                                          }
-                                          return null;
-                                        }),
+                                    child: Stack(
+                                      alignment: AlignmentDirectional.centerEnd,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Container(
+                                            height: size.height * 0.06,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0)),
+                                            child: Center(
+                                              child: Text(
+                                                "التاريخ: ${DateFormat('dd-MM-yyyy').format(selectedDate)}",
+                                                style: const TextStyle(
+                                                    fontSize: 18.0),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 15,
+                                          child: IconButton(
+                                              onPressed: () {
+                                                _selectDate(context);
+                                              },
+                                              icon: const Icon(
+                                                Icons.calendar_today,
+                                                color: Colors.purple,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -311,15 +344,6 @@ class _InsertBillScreenState extends State<InsertBillScreen> {
               billData: _billDataList,
             );
             break;
-          case 'date':
-            _bill = Bill(
-              billNo: _bill.billNo,
-              companyName: _bill.companyName,
-              date: value!,
-              billData: _billDataList,
-            );
-            break;
-
           default:
             break;
         }

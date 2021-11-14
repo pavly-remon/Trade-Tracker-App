@@ -95,11 +95,14 @@ AppBar insertAppBar({required String title, required var onPressed}) => AppBar(
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: onPressed,
-          icon: const Icon(
-            Icons.save,
-            color: Colors.white,
+        Padding(
+          padding: const EdgeInsets.only(right: 30.0),
+          child: IconButton(
+            onPressed: onPressed,
+            icon: const Icon(
+              Icons.save,
+              color: Colors.white,
+            ),
           ),
         )
       ],

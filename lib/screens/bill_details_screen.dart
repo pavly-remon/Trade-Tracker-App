@@ -28,7 +28,8 @@ class BillDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       BlocProvider.of<BillCubit>(context, listen: false)
                           .remove(bill.billNo);
-                      Navigator.of(context).popUntil(
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        'home',
                         ModalRoute.withName("home"),
                       );
                     },

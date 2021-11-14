@@ -124,6 +124,7 @@ class _InsertDataFieldState extends State<InsertDataField> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
+                      height: size.height * 0.06,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(20.0)),
@@ -138,6 +139,7 @@ class _InsertDataFieldState extends State<InsertDataField> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
+                      height: size.height * 0.06,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(20.0)),

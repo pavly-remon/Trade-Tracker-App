@@ -34,6 +34,20 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
   late Account _account =
       Account(transaction: Transaction.import, date: '', data: []);
   final List<Statment> _accountDataList = <Statment>[];
+  var selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState!.validate();
@@ -55,7 +69,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
       }
       _account = Account(
         transaction: _account.transaction,
-        date: _account.date,
+        date: DateFormat('dd-MM-yyyy').format(selectedDate),
         data: _accountDataList,
       );
       Provider.of<Accounts>(context, listen: false).insertAccount(_account);
@@ -114,23 +128,41 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                 width: size.width * 0.2,
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
-                                  child: _buildInputForm(
-                                      labelText: 'التاريخ',
-                                      inputType: TextInputType.datetime,
-                                      hintText: DateFormat('dd-MM-yyyy')
-                                          .format(DateTime.now()),
-                                      saveValue: 'date',
-                                      validator: (value) {
-                                        RegExp regExp =
-                                            RegExp(r"\d{1,2}\-\d{1,2}\-\d{4}");
-                                        if (value!.isEmpty) {
-                                          return 'من فضلك ادخل التاريخ';
-                                        }
-                                        if (!regExp.hasMatch(value)) {
-                                          return 'سنة - شهر - يوم';
-                                        }
-                                        return null;
-                                      }),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.centerEnd,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          height: size.height * 0.06,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0)),
+                                          child: Center(
+                                            child: Text(
+                                              "التاريخ: ${DateFormat('dd-MM-yyyy').format(selectedDate)}",
+                                              style: const TextStyle(
+                                                  fontSize: 18.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 15,
+                                        child: IconButton(
+                                            onPressed: () {
+                                              _selectDate(context);
+                                            },
+                                            icon: const Icon(
+                                              Icons.calendar_today,
+                                              color: Colors.purple,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -146,7 +178,9 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0),
-                                  child: ElevatedButton(
+                                  child: ElevatedButton.icon(
+                                    icon: const Icon(
+                                        Icons.arrow_downward_rounded),
                                     onPressed: () {
                                       setState(() {
                                         _isImport = true;
@@ -158,27 +192,30 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                      ),
                                       primary: _isImport
-                                          ? Colors.purple[700]
+                                          ? Colors.green
                                           : Colors.grey,
                                     ),
-                                    child: SizedBox(
+                                    label: SizedBox(
                                         height: size.height * 0.07,
-                                        width: size.width * 0.1,
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(5.0),
-                                          child: Center(
-                                              child: Text(
-                                            'وارد',
-                                            style: TextStyle(fontSize: 26),
-                                          )),
-                                        )),
+                                        width: size.width * 0.05,
+                                        child: const Center(
+                                            child: Text(
+                                          'وارد',
+                                          style: TextStyle(fontSize: 26),
+                                        ))),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0),
-                                  child: ElevatedButton(
+                                  child: ElevatedButton.icon(
+                                    icon:
+                                        const Icon(Icons.arrow_upward_rounded),
                                     onPressed: () {
                                       setState(() {
                                         _isImport = false;
@@ -190,21 +227,21 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                       });
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: !_isImport
-                                          ? Colors.purple[700]
-                                          : Colors.grey,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                      ),
+                                      primary:
+                                          !_isImport ? Colors.red : Colors.grey,
                                     ),
-                                    child: SizedBox(
+                                    label: SizedBox(
                                         height: size.height * 0.07,
-                                        width: size.width * 0.1,
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(5.0),
-                                          child: Center(
-                                              child: Text(
-                                            'منصرف',
-                                            style: TextStyle(fontSize: 26),
-                                          )),
-                                        )),
+                                        width: size.width * 0.05,
+                                        child: const Center(
+                                            child: Text(
+                                          'منصرف',
+                                          style: TextStyle(fontSize: 26),
+                                        ))),
                                   ),
                                 ),
                               ],

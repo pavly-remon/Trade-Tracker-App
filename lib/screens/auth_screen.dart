@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/account.dart';
@@ -12,7 +14,18 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  bool _first = true;
   final _pw = TextEditingController();
+  @override
+  void initState() {
+    Timer(const Duration(seconds: 4), () {
+      setState(() {
+        _first = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -33,16 +46,22 @@ class _AuthScreenState extends State<AuthScreen> {
                 height: size.height * 0.6,
                 child: Image.asset('assets/images/logo/logo_white.png'),
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: _buildPasswordBar(size),
-              ),
               SizedBox(
-                height: size.height * 0.05,
+                height: size.height * 0.03,
               ),
-              Image.asset(
-                'assets/images/proton.png',
-                scale: 15,
+              AnimatedCrossFade(
+                firstChild: Image.asset(
+                  'assets/images/proton.png',
+                  scale: 10,
+                ),
+                secondChild: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: _buildPasswordBar(size),
+                ),
+                crossFadeState: _first
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: const Duration(seconds: 1),
               ),
             ],
           ),
@@ -62,7 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
             Center(
               child: TextFormField(
                 obscureText: true,
-                autofocus: true,
+                // autofocus: true,
                 controller: _pw,
                 onFieldSubmitted: (text) {
                   _submitPW();
