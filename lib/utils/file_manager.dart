@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:resolution_app/models/account.dart';
 
 import '../models/bill.dart';
+import 'encrypt_manager.dart';
 
 class FileManager {
   static Future<String> createFolderInAppDocDir(String folderName) async {
@@ -28,12 +29,12 @@ class FileManager {
 
   static Future<File> get _localFileBills async {
     final path = await createFolderInAppDocDir('Resolution-Data');
-    return File('$path/bills.json');
+    return File('$path/bills');
   }
 
   static Future<File> get _localFileTransactions async {
     final path = await createFolderInAppDocDir('Resolution-Data');
-    return File('$path/transactions.json');
+    return File('$path/transactions');
   }
 
   static Future<File> writeBills(List<Bill> bills) async {
@@ -47,7 +48,7 @@ class FileManager {
     }
     jsonBills += ']}';
     // Write the file
-    return file.writeAsString(jsonBills);
+    return file.writeAsString(EncryptManager.encrypt(jsonBills));
   }
 
   static Future<Map?> readBills() async {
@@ -56,7 +57,7 @@ class FileManager {
 
       // Read the file
       final contents = await file.readAsString();
-      return json.decode(contents);
+      return json.decode(EncryptManager.decrypt(contents));
     } catch (e) {
       return null;
     }
@@ -73,7 +74,7 @@ class FileManager {
     }
     jsonAccounts += ']}';
     // Write the file
-    return file.writeAsString(jsonAccounts);
+    return file.writeAsString(EncryptManager.encrypt(jsonAccounts));
   }
 
   static Future<Map?> readAccounts() async {
@@ -82,7 +83,7 @@ class FileManager {
 
       // Read the file
       final contents = await file.readAsString();
-      return json.decode(contents);
+      return json.decode(EncryptManager.decrypt(contents));
     } catch (e) {
       return null;
     }

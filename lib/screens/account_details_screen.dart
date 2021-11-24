@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/account.dart';
-import 'package:resolution_app/screens/home_screen.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
@@ -28,11 +27,10 @@ class AccountDetailsScreen extends StatelessWidget {
                     onPressed: () {
                       Provider.of<Accounts>(context, listen: false)
                           .deleteAccount(account.id!);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                          ModalRoute.withName("/home"));
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        'home',
+                        ModalRoute.withName("home"),
+                      );
                     },
                     child: const Text(
                       "موافق",

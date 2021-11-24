@@ -125,7 +125,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                             children: [
                               SizedBox(
                                 height: size.height * 0.1,
-                                width: size.width * 0.2,
+                                width: size.width * 0.25,
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 10.0),
                                   child: Stack(
@@ -202,7 +202,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                     ),
                                     label: SizedBox(
                                         height: size.height * 0.07,
-                                        width: size.width * 0.05,
+                                        width: size.width * 0.07,
                                         child: const Center(
                                             child: Text(
                                           'وارد',
@@ -236,7 +236,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
                                     ),
                                     label: SizedBox(
                                         height: size.height * 0.07,
-                                        width: size.width * 0.05,
+                                        width: size.width * 0.07,
                                         child: const Center(
                                             child: Text(
                                           'منصرف',
@@ -341,35 +341,6 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
         disableCalMode: true,
       ));
     });
-  }
-
-  TextFormField _buildInputForm({
-    required String labelText,
-    TextInputType? inputType,
-    String? hintText,
-    String? saveValue,
-    String? Function(String?)? validator,
-    TextEditingController? controller,
-  }) {
-    return TextFormField(
-      controller: controller,
-      textAlign: TextAlign.right,
-      keyboardType: inputType,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-        labelText: labelText,
-        alignLabelWithHint: true,
-      ),
-      validator: validator,
-      onSaved: (value) {
-        _account = Account(
-          transaction: _account.transaction,
-          date: value!,
-          data: _accountDataList,
-        );
-      },
-    );
   }
 
   @override

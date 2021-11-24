@@ -121,6 +121,7 @@ class Accounts with ChangeNotifier {
     }
   }
 
+  /// Calculate the summation of all transactions
   double totalMoney() {
     double total = 0.0;
     for (int i = 0; i < _accounts.length; i++) {

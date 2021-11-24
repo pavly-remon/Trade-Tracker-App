@@ -14,20 +14,25 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  bool _first = true;
+  bool _firstTransition = true;
   final _pw = TextEditingController();
   @override
   void initState() {
     Timer(const Duration(seconds: 4), () {
       setState(() {
-        _first = false;
+        BillRepository();
+        Provider.of<Accounts>(context, listen: false).importAccounts();
+        _firstTransition = false;
       });
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    const ImageProvider logo = AssetImage("assets/images/logo/logo_white.png");
+    const ImageProvider background = AssetImage("assets/images/background.jpg");
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
@@ -35,35 +40,39 @@ class _AuthScreenState extends State<AuthScreen> {
           width: size.width,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
+              image: background,
               fit: BoxFit.cover,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: size.height * 0.6,
-                child: Image.asset('assets/images/logo/logo_white.png'),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCrossFade(
-                firstChild: Image.asset(
-                  'assets/images/proton.png',
-                  scale: 10,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size.height * 0.6,
+                  child: const Image(image: logo),
                 ),
-                secondChild: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: _buildPasswordBar(size),
+                SizedBox(
+                  height: size.height * 0.05,
                 ),
-                crossFadeState: _first
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: const Duration(seconds: 1),
-              ),
-            ],
+                AnimatedCrossFade(
+                  firstChild: Image.asset(
+                    'assets/images/proton.png',
+                    scale: 10,
+                  ),
+                  secondChild: Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.1),
+                    child: _buildPasswordBar(size),
+                  ),
+                  crossFadeState: _firstTransition
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(seconds: 1),
+                  firstCurve: Curves.ease,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -81,7 +90,7 @@ class _AuthScreenState extends State<AuthScreen> {
             Center(
               child: TextFormField(
                 obscureText: true,
-                // autofocus: true,
+                autofocus: true,
                 controller: _pw,
                 onFieldSubmitted: (text) {
                   _submitPW();
@@ -119,8 +128,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitPW() {
     if (Authentication.checkPW(_pw.text)) {
-      BillRepository();
-      Provider.of<Accounts>(context, listen: false).importAccounts();
       Navigator.of(context).pushReplacementNamed('home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

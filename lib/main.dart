@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("assets/images/background.jpg"), context);
+    precacheImage(
+        const AssetImage("assets/images/logo/logo_white.png"), context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
