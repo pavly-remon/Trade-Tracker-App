@@ -1,8 +1,9 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:resolution_app/cubit/account_cubit.dart';
 import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/models/statement.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
@@ -72,7 +73,7 @@ class _InsertAccountScreenState extends State<InsertAccountScreen> {
         date: DateFormat('dd-MM-yyyy').format(selectedDate),
         data: _accountDataList,
       );
-      Provider.of<Accounts>(context, listen: false).insertAccount(_account);
+      BlocProvider.of<AccountCubit>(context, listen: false).add(_account);
       Navigator.of(context).pop();
     } catch (error) {
       setState(() {

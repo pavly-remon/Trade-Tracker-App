@@ -61,16 +61,6 @@ class BillRepository {
     _importBills();
   }
 
-  List<Bill> billsList(String? search) {
-    if (search == null || search == '') {
-      return bills;
-    }
-    return bills
-        .where((element) =>
-            element.companyName.toLowerCase().contains(search.toLowerCase()))
-        .toList();
-  }
-
   Future<void> _importBills() async {
     try {
       if (!_importData) {

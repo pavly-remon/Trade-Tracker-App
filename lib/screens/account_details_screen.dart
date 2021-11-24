@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resolution_app/cubit/bill_cubit.dart';
 import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/widgets/app_bar.dart';
 
@@ -25,8 +26,8 @@ class AccountDetailsScreen extends StatelessWidget {
                 actions: [
                   ElevatedButton(
                     onPressed: () {
-                      Provider.of<Accounts>(context, listen: false)
-                          .deleteAccount(account.id!);
+                      BlocProvider.of<BillCubit>(context, listen: false)
+                          .remove(account.id!);
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         'home',
                         ModalRoute.withName("home"),

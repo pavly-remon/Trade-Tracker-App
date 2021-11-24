@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resolution_app/cubit/account_cubit.dart';
 import 'package:resolution_app/models/bill.dart';
 import 'package:resolution_app/screens/auth_screen.dart';
 import 'package:resolution_app/screens/bill_details_screen.dart';
@@ -11,6 +12,7 @@ import '../screens/insert_bill_screen.dart';
 
 class AppRouter {
   final BillCubit _billCubit = BillCubit();
+  final AccountCubit _accountCubit = AccountCubit();
 
   Route? onGenerateRoute(RouteSettings routeSettings) {
     // <-- remove static from here!
@@ -22,8 +24,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => const AuthScreen());
       case 'home':
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: _billCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _billCubit,
+              ),
+              BlocProvider.value(
+                value: _accountCubit,
+              ),
+            ],
             child: const HomeScreen(),
           ),
         );
@@ -44,7 +53,7 @@ class AppRouter {
       case 'insert_account':
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value: _billCubit,
+            value: _accountCubit,
             child: const InsertAccountScreen(),
           ),
         );

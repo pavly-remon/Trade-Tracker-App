@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:resolution_app/utils/file_manager.dart';
 
 import 'statement.dart';
@@ -66,19 +65,20 @@ class Account {
   }
 }
 
-class Accounts with ChangeNotifier {
+class AccountRepository {
   bool _importData = false;
-  final List<Account> _accounts = [];
+  static final List<Account> _accounts = [];
 
-  List<Account> accountsList(String? search) {
-    if (search == null || search == '') {
-      return _accounts;
-    }
-    return _accounts.where((element) => element.date.contains(search)).toList();
+  AccountRepository() {
+    importAccounts();
+  }
+
+  static List<Account> get accounts {
+    return _accounts;
   }
 
   ///Add new account to list of accounts that are saved locally in device
-  void insertAccount(Account account) {
+  static void insertAccount(Account account) {
     try {
       _accounts.add(Account(
         id: _accounts.length.toString(),
@@ -87,17 +87,15 @@ class Accounts with ChangeNotifier {
         data: account.data,
       ));
       FileManager.writeAccounts(_accounts);
-      notifyListeners();
     } catch (e) {
       rethrow;
     }
   }
 
-  void deleteAccount(String id) {
+  static void deleteAccount(String id) {
     try {
       _accounts.removeWhere((element) => element.id == id);
       FileManager.writeAccounts(_accounts);
-      notifyListeners();
     } catch (e) {
       rethrow;
     }
@@ -114,7 +112,6 @@ class Accounts with ChangeNotifier {
           }
         });
         _importData = true;
-        notifyListeners();
       }
     } catch (e) {
       rethrow;
@@ -122,7 +119,7 @@ class Accounts with ChangeNotifier {
   }
 
   /// Calculate the summation of all transactions
-  double totalMoney() {
+  static double totalMoney() {
     double total = 0.0;
     for (int i = 0; i < _accounts.length; i++) {
       if (_accounts[i].transaction == Transaction.import) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:resolution_app/models/account.dart';
 import 'package:resolution_app/models/auth.dart';
 import 'package:resolution_app/models/bill.dart';
@@ -21,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
     Timer(const Duration(seconds: 4), () {
       setState(() {
         BillRepository();
-        Provider.of<Accounts>(context, listen: false).importAccounts();
+        AccountRepository();
         _firstTransition = false;
       });
     });
