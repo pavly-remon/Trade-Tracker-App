@@ -1,9 +1,16 @@
-# resolution_app
+# Account Management System
 
-A Desktop Flutter app for windows for resolution company that app aims to manage Bills, Imports, and Exports .
+A Desktop Flutter app for windows that aims to manage Bills, Imports, and Exports. Also this application is secured with password and data are encrypted
+
+This application was built for [Resolution company](https://www.facebook.com/Resolution.Egypt).
+
+## Preview
+[Click here](https://youtu.be/NLm31dzR_hM) to see app preview
 
 ## Technologies used in the project
 - Flutter
+- BLoC
+- Encryption
 
 ## Author
 
