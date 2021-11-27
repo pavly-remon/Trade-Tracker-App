@@ -1,5 +1,7 @@
+import 'package:resolution_app/models/password.dart';
+
 class Authentication {
-  static const _password = '85246';
+  static const _password = password;
 
   static bool checkPW(String pw) {
     if (pw == _password) {
