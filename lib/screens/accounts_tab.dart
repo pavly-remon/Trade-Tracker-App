@@ -35,7 +35,7 @@ class _AccountsTabState extends State<AccountsTab> {
       height: (size.height - widget.appBarSize.height) * 0.95,
       child: Column(
         children: [
-          SearchBar(
+          SearchBarWidget(
             search: _search,
             hintText: "البحث بالتاريخ",
           ),

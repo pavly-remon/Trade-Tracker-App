@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
+class SearchBarWidget extends StatelessWidget {
   final String? hintText;
-  const SearchBar({
+  const SearchBarWidget({
     Key? key,
     this.hintText,
     required TextEditingController search,

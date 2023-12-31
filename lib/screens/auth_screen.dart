@@ -58,17 +58,14 @@ class _AuthScreenState extends State<AuthScreen> {
                 AnimatedCrossFade(
                   firstChild: Image.asset(
                     'assets/images/proton.png',
-                    scale: 10,
+                    scale: 20,
                   ),
-                  secondChild: Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.1),
-                    child: _buildPasswordBar(size),
-                  ),
+                  secondChild: _buildPasswordBar(size),
                   crossFadeState: _firstTransition
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
                   duration: const Duration(seconds: 1),
-                  firstCurve: Curves.ease,
+                  firstCurve: Curves.linear,
                 ),
               ],
             ),

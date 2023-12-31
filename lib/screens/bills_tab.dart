@@ -37,7 +37,7 @@ class _BillsTabState extends State<BillsTab> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SearchBar(
+                SearchBarWidget(
                   search: _search,
                   hintText: "البحث باسم العميل/الشركة",
                 ),
