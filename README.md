@@ -1,6 +1,6 @@
-# Account Management System
+# Trade Tracker
 
-A Desktop Flutter app for windows that aims to manage Bills, Imports, and Exports. Also this application is secured with password and data are encrypted
+A Desktop Flutter app for Windows that aims to manage Bills, Imports, and Exports. Also, this application is secured with a password and data are encrypted
 
 This application was built for [Resolution company](https://www.facebook.com/Resolution.Egypt).
 
